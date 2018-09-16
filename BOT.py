@@ -15,13 +15,15 @@ LOGIN = 'ilia1219464' # Логин Steam
 PASSWORD = 'IlIa3417884' # Пароль Steam
 # LOGIN = 'diggle98' # Логин Steam
 # PASSWORD = 'FABZ6NNA83RW' # Пароль Steam
-SHOULD_TO_BYE = False # Установить True для автоматической скупки паков
+SHOULD_TO_BYE = True # Установить True для автоматической скупки паков
 FIRST_GAME_INDEX = 0
 LUST_GAME_INDEX = -1
-TIME_TO_SLEEP = 1.55 # Настройка паузы между запросами
-MAX_PACK_PRICE = 100 # Максимальная цена пака RUB
+TIME_TO_SLEEP = 1.5 # Настройка паузы между запросами
+MAX_PACK_PRICE_USA = 0.5 # Максимальная цена пака RUB
+MAX_PACK_PRICE_RUB = 50 # Максимальная цена пака RUB
 PATH_TO_WEBDRIVER = '/Users/ilaantonov/PycharmProjects/parser/chromedriver' # Путь до Webdriver
-SEARCH_FORMULA = 0.9*3 # Формула для поиска выгодных карт. (Изменять первый коэффициент)
+PATH_TO_WEBDRIVER_OPERA = '/Users/ilaantonov/PycharmProjects/parser/operadriver' # Путь до Webdriver
+SEARCH_FORMULA = 0.85*0.85*3 # Формула для поиска выгодных карт. (Изменять первый коэффициент)
 # SEARCH_FORMULA = 1.2*3 # Формула для поиска выгодных карт. (Изменять первый коэффициент)
 
 WHAIT_FOR_ENTER_CODE = 30 # Установка времени на ожидание ввода кода подтверждения логина
@@ -42,16 +44,20 @@ def parse_booster(browser):
     soup = BeautifulSoup(generated_html, "html.parser")
     table = soup.find('table', id="boosterpricelist")
     result_link_list = []
-    for teg_a in table.tbody.find_all('a'):
-        link = STEEM_PREFIX_LINK + teg_a['href'][25:]
-        result_link_list.append(link)
+    for teg_tr in table.tbody.find_all('tr'):
+        price = float(teg_tr.find_all('td')[2].string[1:])
+        if price < MAX_PACK_PRICE_USA:
+            teg_a = teg_tr.find('a')
+            link = STEEM_PREFIX_LINK + teg_a['href'][25:]
+            result_link_list.append(link)
+    print(len(result_link_list), ' - count of games')
     return result_link_list
 
 
 def should_to_bye(card_price, card_pak_price, count_set_on_market):
     if card_price == 0:
         return False
-    elif (count_set_on_market > 10) & (card_price * SEARCH_FORMULA > card_pak_price) & (card_pak_price < MAX_PACK_PRICE):
+    elif (count_set_on_market > 10) & (card_price * SEARCH_FORMULA > card_pak_price) & (card_pak_price < MAX_PACK_PRICE_RUB):
         return True
     return False
 
@@ -104,11 +110,7 @@ def login(browser):
     print('Login sucsess...')
 
 def search_pack_and_cards(link, browser):
-
-    # login(browser) # Убрать после отладки
-
     browser.get(link)
-    # time.sleep(TIME_TO_SLEEP)
     browser.find_element_by_class_name('market_listing_table_header').find_element_by_class_name('market_listing_right_cell').click()
 
     soup = BeautifulSoup(browser.page_source, 'html.parser')
@@ -122,9 +124,12 @@ def search_pack_and_cards(link, browser):
         print('error')
 
     for i in range(pages_count):
-        time.sleep(TIME_TO_SLEEP)
         try:
+            oldt = time.time()
             page_next.click()
+            ts = TIME_TO_SLEEP - (time.time() - oldt)
+            if ts > 0:
+                time.sleep(ts)
         except:
             return 0, 0, 0, ''
         soup = BeautifulSoup(browser.page_source, 'html.parser')
@@ -170,9 +175,17 @@ def search_pack_and_cards(link, browser):
 
 def parse():
     result_card_sets = []
-    browser = webdriver.Chrome(executable_path=PATH_TO_WEBDRIVER)
+    # browser = webdriver.Chrome(executable_path=PATH_TO_WEBDRIVER)
+    browser = webdriver.Opera(executable_path=PATH_TO_WEBDRIVER_OPERA)
     # time.sleep(500)
-    link_list = parse_booster(browser)
+    link_list = []
+    with open('games_16.09.18.txt') as fr:
+        link_list = [row.strip() for row in fr]
+
+    # Для Opera
+    # print('Активируйте VPN')
+    # time.sleep(20)
+
     login(browser)
 
     with open('result.txt', 'a') as fw:
@@ -196,15 +209,14 @@ def parse():
             if should_to_bye(card_p, pack_p, count_set_on_market):
                 print(card_p, pack_p)
                 result_card_sets.append(link)
-                print('add Game lint to list and \'result.txt\' file')
-                # bye(set_link, card_p * SEARCH_FORMULA, browser)
+                # print('add Game link to list and \'result.txt\' file')
+                bye(set_link, card_p * SEARCH_FORMULA, browser)
                 fw.write(link + '\t\n')
 
-    print('на этом всё, я не хочу быть забаненым\nПройдены игры с', FIRST_GAME_INDEX, ' по ', LUST_GAME_INDEX)
+    # print('на этом всё, я не хочу быть забаненым\nПройдены игры с', FIRST_GAME_INDEX, ' по ', LUST_GAME_INDEX)
     browser.quit()
     return result_card_sets
 
 
 
 print(parse())
-

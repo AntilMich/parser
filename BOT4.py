@@ -16,12 +16,13 @@ PASSWORD = 'IlIa3417884' # Пароль Steam
 # LOGIN = 'diggle98' # Логин Steam
 # PASSWORD = 'FABZ6NNA83RW' # Пароль Steam
 SHOULD_TO_BYE = False # Установить True для автоматической скупки паков
-FIRST_GAME_INDEX = 4000
-LUST_GAME_INDEX = 4200
+FIRST_GAME_INDEX = 4200
+LUST_GAME_INDEX = -1
 TIME_TO_SLEEP = 1.5 # Настройка паузы между запросами
 MAX_PACK_PRICE_USA = 0.5 # Максимальная цена пака RUB
 MAX_PACK_PRICE_RUB = 50 # Максимальная цена пака RUB
 PATH_TO_WEBDRIVER = '/Users/ilaantonov/PycharmProjects/parser/chromedriver' # Путь до Webdriver
+PATH_TO_WEBDRIVER_OPERA = '/Users/ilaantonov/PycharmProjects/parser/operadriver' # Путь до Webdriver
 SEARCH_FORMULA = 0.9*3 # Формула для поиска выгодных карт. (Изменять первый коэффициент)
 # SEARCH_FORMULA = 1.2*3 # Формула для поиска выгодных карт. (Изменять первый коэффициент)
 
@@ -174,9 +175,15 @@ def search_pack_and_cards(link, browser):
 
 def parse():
     result_card_sets = []
-    browser = webdriver.Chrome(executable_path=PATH_TO_WEBDRIVER)
+    # browser = webdriver.Chrome(executable_path=PATH_TO_WEBDRIVER)
+    browser = webdriver.Opera(executable_path=PATH_TO_WEBDRIVER_OPERA)
     # time.sleep(500)
     link_list = parse_booster(browser)
+
+    # Для Opera
+    print('Активируйте VPN')
+    time.sleep(20)
+
     login(browser)
 
     with open('result.txt', 'a') as fw:
@@ -211,7 +218,3 @@ def parse():
 
 
 print(parse())
-# oldt = time.time()
-# time.sleep(1)
-# newt = time.time()
-# print(newt-oldt)
