@@ -16,9 +16,9 @@ PASSWORD = 'IlIa3417884' # Пароль Steam
 # LOGIN = 'diggle98' # Логин Steam
 # PASSWORD = 'FABZ6NNA83RW' # Пароль Steam
 SHOULD_TO_BYE = False # Установить True для автоматической скупки паков
-FIRST_GAME_INDEX = 3000
-LUST_GAME_INDEX = 4000
-TIME_TO_SLEEP = 1 # Настройка паузы между запросами
+FIRST_GAME_INDEX = 4000
+LUST_GAME_INDEX = 4200
+TIME_TO_SLEEP = 1.5 # Настройка паузы между запросами
 MAX_PACK_PRICE_USA = 0.5 # Максимальная цена пака RUB
 MAX_PACK_PRICE_RUB = 50 # Максимальная цена пака RUB
 PATH_TO_WEBDRIVER = '/Users/ilaantonov/PycharmProjects/parser/chromedriver' # Путь до Webdriver
@@ -109,11 +109,7 @@ def login(browser):
     print('Login sucsess...')
 
 def search_pack_and_cards(link, browser):
-
-    # login(browser) # Убрать после отладки
-
     browser.get(link)
-    # time.sleep(TIME_TO_SLEEP)
     browser.find_element_by_class_name('market_listing_table_header').find_element_by_class_name('market_listing_right_cell').click()
 
     soup = BeautifulSoup(browser.page_source, 'html.parser')
@@ -127,9 +123,12 @@ def search_pack_and_cards(link, browser):
         print('error')
 
     for i in range(pages_count):
-        time.sleep(TIME_TO_SLEEP)
         try:
+            oldt = time.time()
             page_next.click()
+            ts = TIME_TO_SLEEP - (time.time() - oldt)
+            if ts > 0:
+                time.sleep(ts)
         except:
             return 0, 0, 0, ''
         soup = BeautifulSoup(browser.page_source, 'html.parser')
@@ -212,4 +211,7 @@ def parse():
 
 
 print(parse())
-
+# oldt = time.time()
+# time.sleep(1)
+# newt = time.time()
+# print(newt-oldt)
