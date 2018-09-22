@@ -20,7 +20,7 @@ FIRST_GAME_INDEX = 0
 LUST_GAME_INDEX = -1
 TIME_TO_SLEEP = 1.5 # Настройка паузы между запросами
 MAX_PACK_PRICE_USA = 0.5 # Максимальная цена пака RUB
-MAX_PACK_PRICE_RUB = 50 # Максимальная цена пака RUB
+MAX_PACK_PRICE_RUB = 20 # Максимальная цена пака RUB
 PATH_TO_WEBDRIVER = '/Users/ilaantonov/PycharmProjects/parser/chromedriver' # Путь до Webdriver
 PATH_TO_WEBDRIVER_OPERA = '/Users/ilaantonov/PycharmProjects/parser/operadriver' # Путь до Webdriver
 SEARCH_FORMULA = 0.85*0.85*3 # Формула для поиска выгодных карт. (Изменять первый коэффициент)
@@ -178,13 +178,13 @@ def parse():
     # browser = webdriver.Chrome(executable_path=PATH_TO_WEBDRIVER)
     browser = webdriver.Opera(executable_path=PATH_TO_WEBDRIVER_OPERA)
     # time.sleep(500)
-    link_list = []
-    with open('games_16.09.18.txt') as fr:
-        link_list = [row.strip() for row in fr]
+    link_list = parse_booster(browser)
+    # with open('games_16.09.18.txt') as fr:
+    #     link_list = [row.strip() for row in fr]
 
     # Для Opera
-    # print('Активируйте VPN')
-    # time.sleep(20)
+    print('Активируйте VPN')
+    time.sleep(20)
 
     login(browser)
 
