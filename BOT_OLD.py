@@ -10,8 +10,7 @@ BOOSTER_PRICES = 'https://www.steamcardexchange.net/index.php?boosterprices'
 STEEM_PREFIX_LINK = 'https://steamcommunity.com/market/search?appid=753&category_753_Game%5B%5D=tag_app_'
 
 # Настройка программы:
-# LOGIN = 'diggle98' # Логин Steam
-# PASSWORD = 'FABZ6NNA83RW' # Пароль Steam
+
 LOGIN = 'ilia1219464' # Логин Steam
 PASSWORD = 'IlIa3417884' # Пароль Steam
 SHOULD_TO_BYE = False # Установить True для автоматической скупки паков

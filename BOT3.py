@@ -13,8 +13,7 @@ STEEM_PREFIX_LINK = 'https://steamcommunity.com/market/search?appid=753&category
 
 LOGIN = 'ilia1219464' # Логин Steam
 PASSWORD = 'IlIa3417884' # Пароль Steam
-# LOGIN = 'diggle98' # Логин Steam
-# PASSWORD = 'FABZ6NNA83RW' # Пароль Steam
+
 SHOULD_TO_BYE = False # Установить True для автоматической скупки паков
 FIRST_GAME_INDEX = 0
 LUST_GAME_INDEX = -1
