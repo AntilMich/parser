@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 
 BOOSTER_PRICES = 'https://www.steamcardexchange.net/index.php?boosterprices'
-STEEM_PREFIX_LINK = 'https://steamcommunity.com/market/search?appid=753&category_753_Game%5B%5D=tag_app_'
+STEEM_PREFIX_LINK = 'https://steamcommunity.com/market/search?q=&category_753_Game%5B%5D=tag_app_'
+STEEM_POSTFIX_LINK = '&category_753_item_class%5B%5D=tag_item_class_2&category_753_item_class%5B%5D=tag_item_class_5&appid=753'
 
 # Настройка программы:
 
@@ -47,7 +48,7 @@ def parse_booster(browser):
         price = float(teg_tr.find_all('td')[2].string[1:])
         if price < MAX_PACK_PRICE_USA:
             teg_a = teg_tr.find('a')
-            link = STEEM_PREFIX_LINK + teg_a['href'][25:]
+            link = STEEM_PREFIX_LINK + teg_a['href'][25:] + STEEM_POSTFIX_LINK
             result_link_list.append(link)
     print(len(result_link_list), ' - count of games')
     return result_link_list
@@ -174,16 +175,16 @@ def search_pack_and_cards(link, browser):
 
 def parse():
     result_card_sets = []
-    # browser = webdriver.Chrome(executable_path=PATH_TO_WEBDRIVER)
-    browser = webdriver.Opera(executable_path=PATH_TO_WEBDRIVER_OPERA)
-    # time.sleep(500)
+    browser = webdriver.Chrome(executable_path=PATH_TO_WEBDRIVER)
+    # browser = webdriver.Opera(executable_path=PATH_TO_WEBDRIVER_OPERA)
     link_list = parse_booster(browser)
+    print(link_list[0])
     # with open('games_16.09.18.txt') as fr:
     #     link_list = [row.strip() for row in fr]
 
     # Для Opera
-    print('Активируйте VPN')
-    time.sleep(20)
+    # print('Активируйте VPN')
+    # time.sleep(20)
 
     login(browser)
 
