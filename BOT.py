@@ -176,7 +176,6 @@ def parse():
     browser = webdriver.Chrome(executable_path=PATH_TO_WEBDRIVER)
     # browser = webdriver.Opera(executable_path=PATH_TO_WEBDRIVER_OPERA)
     link_list = parse_booster(browser)
-    print(link_list[0])
     # with open('games_16.09.18.txt') as fr:
     #     link_list = [row.strip() for row in fr]
 
