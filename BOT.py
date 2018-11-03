@@ -6,15 +6,10 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-BOOSTER_PRICES = 'https://www.steamcardexchange.net/index.php?boosterprices'
-STEEM_PREFIX_LINK = 'https://steamcommunity.com/market/search?q=&category_753_Game%5B%5D=tag_app_'
-STEEM_POSTFIX_LINK = '&category_753_item_class%5B%5D=tag_item_class_2&category_753_item_class%5B%5D=tag_item_class_5&appid=753'
-
 # Настройка программы:
 
-LOGIN = 'ilia1219464' # Логин Steam
-PASSWORD = 'IlIa3417884' # Пароль Steam
-
+LOGIN = '' # Логин Steam
+PASSWORD = '' # Пароль Steam
 SHOULD_TO_BYE = True # Установить True для автоматической скупки паков
 FIRST_GAME_INDEX = 0
 LUST_GAME_INDEX = -1
@@ -25,9 +20,12 @@ PATH_TO_WEBDRIVER = '/Users/ilaantonov/PycharmProjects/parser/chromedriver' # П
 PATH_TO_WEBDRIVER_OPERA = '/Users/ilaantonov/PycharmProjects/parser/operadriver' # Путь до Webdriver
 SEARCH_FORMULA = 0.85*0.85*3 # Формула для поиска выгодных карт. (Изменять первый коэффициент)
 # SEARCH_FORMULA = 1.2*3 # Формула для поиска выгодных карт. (Изменять первый коэффициент)
-
 WHAIT_FOR_ENTER_CODE = 30 # Установка времени на ожидание ввода кода подтверждения логина
 
+
+BOOSTER_PRICES = 'https://www.steamcardexchange.net/index.php?boosterprices'
+STEEM_PREFIX_LINK = 'https://steamcommunity.com/market/search?q=&category_753_Game%5B%5D=tag_app_'
+STEEM_POSTFIX_LINK = '&category_753_item_class%5B%5D=tag_item_class_2&category_753_item_class%5B%5D=tag_item_class_5&appid=753'
 
 def parse_booster(browser):
 
